@@ -34,19 +34,14 @@ rollButton.addEventListener("click", function () {
             currScore += rollResult;
             if (rollResult == 1) {
                 currScore = 0;
-                player1.classList.remove("player--active");
-                player2.classList.add("player--active");
-                document.querySelector("#current--0").textContent = currScore;
+                switchPlayer();
             }
-
             document.querySelector("#current--0").textContent = currScore;
         } else {
             currScore += rollResult;
             if (rollResult == 1) {
                 currScore = 0;
-                player1.classList.add("player--active");
-                player2.classList.remove("player--active");
-                document.querySelector("#current--1").textContent = currScore;
+                switchPlayer();
             }
             document.querySelector("#current--1").textContent = currScore;
         }
@@ -59,21 +54,24 @@ rollButton.addEventListener("click", function () {
     }
 });
 
+function switchPlayer() {
+    player1.classList.toggle("player--active");
+    player2.classList.toggle("player--active");
+    document.querySelector("#current--0").textContent = 0;
+    document.querySelector("#current--1").textContent = 0;
+}
+
 // Click hold button
 holdButton.addEventListener("click", function () {
     if (score1 < 100 && score2 < 100) {
         if (player1.classList.contains("player--active")) {
-            player1.classList.remove("player--active");
-            player2.classList.add("player--active");
+            switchPlayer();
             score1 += currScore;
             player1Score.textContent = score1;
-            document.querySelector("#current--0").textContent = 0;
         } else {
-            player2.classList.remove("player--active");
-            player1.classList.add("player--active");
+            switchPlayer();
             score2 += currScore;
             player2Score.textContent = score2;
-            document.querySelector("#current--1").textContent = 0;
         }
         currScore = 0;
     }
@@ -95,10 +93,6 @@ newGameButton.addEventListener("click", function() {
         player2.classList.remove("player--winner");
     }
 
-    if (player2.classList.contains("player--active")) {
-        player1.classList.add("player--active");
-        player2.classList.remove("player--active");
-    }   
-
+    switchPlayer();
     init();
 });
